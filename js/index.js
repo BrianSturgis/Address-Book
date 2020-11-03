@@ -44,7 +44,7 @@ function Contact(firstName, lastName, phoneNumber) {
   this.phoneNumber = phoneNumber;
 }
 
-Contact.prototype.fullName = function() {
+Contact.prototype.fullName = function() { 
   return this.firstName + " " + this.lastName;
 }
 
@@ -60,7 +60,27 @@ function displayContactDetails(addressBookToDisplay){
   contactsList.html(htmlForContactInfo);
 };
 
+function showContact (contactId) {
+  const contact = addressBook.findContact(contactId);
+  $("#show-contact").show();
+  $(".first-name").html(contact.firstName);
+  $(".last-name").html(contact.lastName);
+  $(".phone-number").html(contact.phoneNumber);
+  let buttons = $("#buttons");
+  buttons.empty();
+  buttons.append("<button class='deletebutton' id=" +  + contact.id + ">delete</button>");
+}
+
+function attachContactListeners() {
+  $("ul#contacts").on("click", "li", function()  {
+    showContact(this.id); 
+  });
+};
+
+
+
 $(document).ready(function() {
+  attachContactListeners();
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
     const inputtedFirstName = $("input#new-first-name").val();
