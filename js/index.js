@@ -45,9 +45,25 @@ function Contact(firstName, lastName, phoneNumber, emailAddress) {
   this.lastName = lastName;
   this.phoneNumber = phoneNumber;
   this.emailAddress = emailAddress;
+  this.addresses = [];
 }
-// 
 
+Contact.prototype.addAddress = function(address) {
+  address.id = this.assignId();
+  this.addresses.push(address);
+}
+
+Contact.prototype.assignId = function() {
+  this.currentId += 1;
+  return this.currentId;
+}
+
+function Address(street, city, state, zipcode, country) {
+  this.street = street;
+  this.city = city;
+  this.state = state;
+  this.zipcode = zipcode;
+}
 
 Contact.prototype.fullName = function() { 
   return this.firstName + " " + this.lastName;
@@ -72,6 +88,10 @@ function showContact (contactId) {
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   $(".email-address").html(contact.emailAddress);
+  $(".street-address").html(address.street);
+  $(".city-address").html(address.city);
+  $(".state-address").html(address.state);
+  $("zip-address").html(address.zipcode);
   let buttons = $("#buttons");
   buttons.empty();
   buttons.append("<button class='deletebutton' id=" +  + contact.id + ">delete</button>");
@@ -83,8 +103,6 @@ function attachContactListeners() {
   });
 };
 
-
-
 $(document).ready(function() {
   attachContactListeners();
   $("form#new-contact").submit(function(event) {
@@ -93,7 +111,11 @@ $(document).ready(function() {
     const inputtedLastName = $("input#new-last-name").val();
     const inputtedPhoneNumber = $("input#new-phone-number").val();
     const inputtedEmailAddress = $("input#new-emailaddress").val();
-    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress);
+    const inputtedStreet = $("input#new-street").val();
+    const inputtedCity = $("input#new-city").val();
+    const inputtedState = $("input#new-state").val();
+    const inputtedZip = $("input#new-zip").val();
+    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress, inputtedStreet, inputtedCity, inputtedState, inputtedZip);
     addressBook.addContact(newContact);
     displayContactDetails(addressBook);
   });
