@@ -40,25 +40,33 @@ AddressBook.prototype.deleteContact = function(id) {
 
 
 // Business Logic for Contacts ---------
-function Contact(firstName, lastName, phoneNumber, emailAddress) {
+function Contact(firstName, lastName, phoneNumber, emailAddress,) {
   this.firstName = firstName;
   this.lastName = lastName;
   this.phoneNumber = phoneNumber;
   this.emailAddress = emailAddress;
   this.addresses = [];
+
 }
 
 Contact.prototype.addAddress = function(address) {
-  address.id = this.assignId();
   this.addresses.push(address);
-}
+};
 
-Contact.prototype.assignId = function() {
-  this.currentId += 1;
-  return this.currentId;
-}
+// function Contact(firstName, lastName, phoneNumber, email) {
+//   this.firstName = firstName;
+//   this.lastName = lastName;
+//   this.phoneNumber = phoneNumber;
+//   this.email = email;
+//   this.addresses = [];
+// }
+// Contact.prototype.addAddress = function (address) {
+//   this.addresses.push(address);
+// };
 
-function Address(street, city, state, zipcode, country) {
+
+
+function Address(street, city, state, zipcode,) {
   this.street = street;
   this.city = city;
   this.state = state;
@@ -88,10 +96,14 @@ function showContact (contactId) {
   $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   $(".email-address").html(contact.emailAddress);
-  $(".street-address").html(address.street);
-  $(".city-address").html(address.city);
-  $(".state-address").html(address.state);
-  $("zip-address").html(address.zipcode);
+  
+  contact.addresses.forEach(function(address) {
+    $(".street-address").text(address.street);
+    $(".city-address").text(address.city);
+    $(".state-address").text(address.state);
+    $(".zip-address").text(address.zipcode);
+  });
+  
   let buttons = $("#buttons");
   buttons.empty();
   buttons.append("<button class='deletebutton' id=" +  + contact.id + ">delete</button>");
@@ -115,8 +127,12 @@ $(document).ready(function() {
     const inputtedCity = $("input#new-city").val();
     const inputtedState = $("input#new-state").val();
     const inputtedZip = $("input#new-zip").val();
-    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress, inputtedStreet, inputtedCity, inputtedState, inputtedZip);
+    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress);
+    let newAddress = new Address (inputtedStreet, inputtedCity, inputtedState, inputtedZip);
+    console.log(newContact);
+    newContact.addAddress(newAddress);
     addressBook.addContact(newContact);
     displayContactDetails(addressBook);
   });
 });
+
